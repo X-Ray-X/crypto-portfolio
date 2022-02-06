@@ -1,0 +1,60 @@
+version: '3.8'
+
+networks:
+  proxy:
+    driver: bridge
+
+volumes:
+  mariadbdata:
+    driver: local
+
+services:
+  php-fpm:
+    container_name: app
+    build:
+      dockerfile: ./docker/php-fpm/Dockerfile
+      context: .
+    volumes:
+      - .:/var/www/html
+    expose:
+      - 9000
+    networks:
+      - proxy
+
+  db:
+    image: mariadb:10.7.1
+    container_name: db
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd!
+      MYSQL_DATABASE: crypto-portfolio
+    volumes:
+      - mariadbdata:/var/lib/mariadb/
+    networks:
+      - proxy
+
+  nginx:
+    build: ./docker/nginx/
+    container_name: nginx
+    restart: unless-stopped
+    depends_on:
+      - php-fpm
+    tty: true
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - proxy
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.1.1
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    networks:
+      - proxy
