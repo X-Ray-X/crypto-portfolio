@@ -1,4 +1,4 @@
-.PHONY: help up down clean prune php-artisan migrate migrate-rollback
+.PHONY: build up down clean prune php-artisan migrate migrate-rollback phpunit cs-fix php-cpd
 
 build:
 	docker-compose -f docker-compose.yml build
@@ -23,3 +23,12 @@ migrate:
 
 migrate-rollback:
 	$(docker-compose -f docker-compose.yml exec php-fpm /bin/sh) php artisan migrate:rollback
+
+phpunit:
+	$(docker-compose -f docker-compose.yml exec php-fpm /bin/sh) php vendor/bin/phpunit
+
+cs-fix:
+	$(docker-compose -f docker-compose.yml exec php-fpm /bin/sh) php vendor/bin/php-cs-fixer fix .
+
+php-cpd:
+	$(docker-compose -f docker-compose.yml exec php-fpm /bin/sh) php vendor/sebastian/phpcpd/phpcpd --fuzzy app

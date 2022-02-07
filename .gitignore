@@ -143,13 +143,12 @@ fabric.properties
 # Generated files
 .phpunit.cache
 
-# PHPUnit
-/app/phpunit.xml
-/phpunit.xml
-
 # Build data
 /build/
 
 # End of https://www.toptal.com/developers/gitignore/api/laravel,phpstorm,phpunit
 
 .idea/
+
+# php-cs-fixer
+.php-cs-fixer.cache
