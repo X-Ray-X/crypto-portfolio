@@ -56,3 +56,17 @@ services:
       - 8081:80
     networks:
       - proxy
+
+  openapi-builder:
+    image: openapitools/openapi-generator-cli:v5.4.0
+    container_name: openapi-builder
+    restart: on-failure
+    volumes:
+      - ./docs:/local
+    profiles:
+      - donotstart
+    command: > 
+        sh -c "/usr/local/bin/docker-entrypoint.sh generate \
+        -i /local/openapi.yaml \ 
+        -g html2 \
+        -o /local/output"

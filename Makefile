@@ -15,6 +15,9 @@ clean:
 prune:
 	docker system prune -af
 
+composer-install:
+	$(docker-compose -f docker-compose.yml exec php-fpm /bin/sh) composer install
+
 php-artisan:
 	docker-compose -f docker-compose.yml exec php-fpm /bin/sh
 
@@ -32,3 +35,6 @@ cs-fix:
 
 php-cpd:
 	$(docker-compose -f docker-compose.yml exec php-fpm /bin/sh) php vendor/sebastian/phpcpd/phpcpd --fuzzy app
+
+build-docs:
+	docker-compose -f docker-compose.yml up openapi-builder

@@ -152,3 +152,6 @@ fabric.properties
 
 # php-cs-fixer
 .php-cs-fixer.cache
+
+# Documentation output
+/docs/output/
