@@ -18,6 +18,12 @@ RUN curl -sSLf \
 # Install PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Use the default development/production configuration
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+# tweak php-fpm config for enabling env values
+RUN sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" "$PHP_INI_DIR/php.ini"
+
 # Remove Cache
 RUN rm -rf /var/cache/apk/*
 
