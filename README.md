@@ -15,7 +15,7 @@
 > 127.0.0.1 crypto-portfolio.test \
 > 127.0.0.1 phpma.test
 
-### Run the command from the root catalog:
+### Run the command from project's root catalog:
 
 > // first installation with some additional steps: \
 > make first-run \
@@ -60,7 +60,7 @@ password: P@ssw0rd!
 
 Make sure to match the project root folder path with an absolute path of the web server container which is '/var/www/html'. You can change this in <strong>Preferences > PHP > Debug > Servers</strong>.
 
-After that, set a breakpoint in the code, click on the <strong>Start Listening to PHP Debug Connestions</strong> button and try sending a request to the API.
+After that, set a breakpoint in the code, click on the <strong>Start Listening to PHP Debug Connections</strong> button and try sending a request to the API.
 
 In case of any issues, please refer to the following sources:
 
