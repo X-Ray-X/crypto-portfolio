@@ -1,24 +1,68 @@
-# Lumen PHP Framework
+# Crypto Portfolio API
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
+## Prerequisites:
+* [Docker](https://docs.docker.com/get-docker/)
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Platform compatibility:
+* macOS: ✅
+* Linux: ❔
+* Windows: ❌
 
-## Official Documentation
+## How to:
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+### Add the following entries to your /etc/hosts file:
 
-## Contributing
+> 127.0.0.1 crypto-portfolio.test \
+> 127.0.0.1 phpma.test
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Run the command from the root catalog:
 
-## Security Vulnerabilities
+> // first installation with some additional steps: \
+> make first-run \
+> \
+> // regular usage: \
+> make up \
+> make down
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+For more please check the contents of Makefile.
 
-## License
+### Accessing Artisan Console from within the container:
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> make artisan
+
+### Generating API documentation:
+
+> make build-docs
+
+Once generated, the .html documentation file can be found in /docs/output folder.
+
+### Testing:
+
+> make test \
+> make test-coverage
+
+The .html test coverage report file can be found in /coverage/html folder.
+
+You can also run static code analysis with [PHPStan](https://github.com/phpstan/phpstan):
+
+> make phpstan
+
+The default strictness level is set to 5. 
+
+### PHPMyAdmin access:
+
+The database admin panel should be accessible under the local domain [phpma.test](http://phpma.test/) with default credentials:
+
+username: root \
+password: P@ssw0rd!
+
+### Using Xdebug with PHPStorm:
+
+Make sure to match the project root folder path with an absolute path of the web server container which is '/var/www/html'. You can change this in <strong>Preferences > PHP > Debug > Servers</strong>.
+
+After that, set a breakpoint in the code, click on the <strong>Start Listening to PHP Debug Connestions</strong> button and try sending a request to the API.
+
+In case of any issues, please refer to the following sources:
+
+* https://www.jetbrains.com/help/phpstorm/configuring-xdebug.html
+* https://matthewsetter.com/setup-step-debugging-php-xdebug3-docker/

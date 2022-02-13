@@ -1,4 +1,6 @@
-.PHONY: build up down clean prune php-artisan migrate migrate-rollback test test-coverage cs-fix php-cpd build-docs phpstan
+.PHONY: first-run build up down clean prune artisan migrate migrate-rollback test test-coverage cs-fix php-cpd build-docs phpstan commit
+
+first-run: up composer-install migrate
 
 build:
 	docker-compose -f docker-compose.yml build
@@ -15,7 +17,7 @@ clean:
 prune:
 	docker system prune -af
 
-php-artisan:
+artisan:
 	docker-compose -f docker-compose.yml exec php-fpm /bin/sh
 
 composer-install:
@@ -44,3 +46,5 @@ build-docs:
 
 phpstan:
 	docker-compose -f docker-compose.yml exec php-fpm php vendor/bin/phpstan analyse app bootstrap public resources routes tests --level 5
+
+commit:	test cs-fix php-cpd phpstan
