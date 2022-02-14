@@ -62,6 +62,12 @@ Make sure to match the project root folder path with an absolute path of the web
 
 After that, set a breakpoint in the code, click on the <strong>Start Listening to PHP Debug Connections</strong> button and try sending a request to the API.
 
+Xdebug is configured to intercept every request by default, as a result it may trigger the following error in some cases (when PHPStorm is not actively listening):
+
+> Xdebug: [Step Debug] Could not connect to debugging client. Tried: host.docker.internal:9003 (through xdebug.client_host/xdebug.client_port) :-(
+
+To change this behavior edit the configuration at /docker/php-fpm/conf.d/xdebug.ini.
+
 In case of any issues, please refer to the following sources:
 
 * https://www.jetbrains.com/help/phpstorm/configuring-xdebug.html

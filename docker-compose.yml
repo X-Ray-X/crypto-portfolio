@@ -23,7 +23,7 @@ services:
 
   db:
     image: mariadb:10.7.1
-    container_name: db
+    container_name: db # This value also serves as DB_HOST in .env database config
     restart: always
     ports:
       - 3306:3306
