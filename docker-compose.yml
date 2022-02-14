@@ -29,9 +29,9 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: P@ssw0rd!
-      MYSQL_DATABASE: crypto-portfolio
+      MYSQL_DATABASE: crypto_portfolio
     volumes:
-      - mariadbdata:/var/lib/mariadb/
+      - mariadbdata:/var/lib/mysql/
     networks:
       - proxy
 

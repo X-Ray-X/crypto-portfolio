@@ -1,6 +1,9 @@
-.PHONY: first-run build up down clean prune artisan migrate migrate-rollback test test-coverage cs-fix php-cpd build-docs phpstan commit
+.PHONY: first-run prepare-env up down clean prune artisan migrate migrate-rollback test test-coverage cs-fix php-cpd build-docs phpstan commit
 
-first-run: up composer-install migrate
+first-run: prepare-env up composer-install migrate
+
+prepare-env:
+	cp .env.example .env
 
 build:
 	docker-compose -f docker-compose.yml build
