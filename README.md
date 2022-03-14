@@ -13,7 +13,8 @@
 ### Add the following entries to your /etc/hosts file:
 
 > 127.0.0.1 crypto-portfolio.test \
-> 127.0.0.1 phpma.test
+> 127.0.0.1 phpma.test \
+> 127.0.0.1 db
 
 ### Run the command from project's root catalog:
 
