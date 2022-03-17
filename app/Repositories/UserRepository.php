@@ -44,7 +44,6 @@ class UserRepository implements UserRepositoryInterface
      */
     public function update(string $userId, array $userData): bool
     {
-
         if (empty($userData)) {
             return true;
         }

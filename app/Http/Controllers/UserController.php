@@ -40,7 +40,7 @@ class UserController extends Controller
                 'username' => ['required', 'alpha_dash', 'unique:users'],
                 'email' => ['required', 'email', 'unique:users'],
                 'password' => ['required', Password::min(8)->numbers()->symbols()],
-                'phoneNumber' => ['sometimes', 'required', new PhoneNumber],
+                'phoneNumber' => ['sometimes', 'required', new PhoneNumber()],
                 'firstName' => ['sometimes', 'required', 'string'],
                 'lastName' => ['sometimes', 'required', 'string'],
             ],
@@ -53,12 +53,13 @@ class UserController extends Controller
         try {
             $user = $this->userRepository->create($request->toArray());
         } catch (\Exception $exception) {
-            return HttpResponse::withArray(Response::HTTP_INTERNAL_SERVER_ERROR,
+            return HttpResponse::withArray(
+                Response::HTTP_INTERNAL_SERVER_ERROR,
                 ['error' => $exception->getMessage()]
             );
         }
 
-        return HttpResponse::withArray(Response::HTTP_CREATED, (new CreatedTransformer)->transform($user));
+        return HttpResponse::withArray(Response::HTTP_CREATED, (new CreatedTransformer())->transform($user));
     }
 
     /**
@@ -70,12 +71,13 @@ class UserController extends Controller
         try {
             $user = $this->userRepository->getUserById($id);
         } catch (ModelNotFoundException $exception) {
-            return HttpResponse::withArray(Response::HTTP_NOT_FOUND,
+            return HttpResponse::withArray(
+                Response::HTTP_NOT_FOUND,
                 ['error' => sprintf('The user with ID: %s does not exist.', $id)]
             );
         }
 
-        return HttpResponse::withArray(Response::HTTP_OK, (new UserTransformer)->transform($user));
+        return HttpResponse::withArray(Response::HTTP_OK, (new UserTransformer())->transform($user));
     }
 
     /**
@@ -91,7 +93,7 @@ class UserController extends Controller
             [
                 'email' => ['sometimes', 'required', 'email', 'unique:users'],
                 'password' => ['sometimes', 'required', Password::min(8)->numbers()->symbols()],
-                'phoneNumber' => ['sometimes', 'required', new PhoneNumber],
+                'phoneNumber' => ['sometimes', 'required', new PhoneNumber()],
                 'firstName' => ['sometimes', 'required', 'string'],
                 'lastName' => ['sometimes', 'required', 'string'],
             ],
@@ -99,7 +101,8 @@ class UserController extends Controller
 
         try {
             if (!$this->userRepository->update($id, $validator->validated())) {
-                return HttpResponse::withArray(Response::HTTP_INTERNAL_SERVER_ERROR,
+                return HttpResponse::withArray(
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
                     ['error' => 'The system could not process your request properly. Please try again later.']
                 );
             }
@@ -120,7 +123,8 @@ class UserController extends Controller
     {
         try {
             if (!$this->userRepository->delete($id)) {
-                return HttpResponse::withArray(Response::HTTP_INTERNAL_SERVER_ERROR,
+                return HttpResponse::withArray(
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
                     ['error' => 'The system could not process your request properly. Please try again later.']
                 );
             }

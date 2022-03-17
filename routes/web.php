@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\UserController;
 
-
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -22,7 +21,7 @@ $router->get('/', function () use ($router) {
 
 $router->group([
     'prefix' => 'api/v1'
-], function($router): void { // Add admin and user authenticated groups, isolate routes
+], function ($router): void { // Add admin and user authenticated groups, isolate routes
     $router->post('/users', [
         'uses' => UserController::class . '@create',
     ]);
