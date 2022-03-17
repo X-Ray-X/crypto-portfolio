@@ -1,6 +1,6 @@
-.PHONY: first-run prepare-env up down clean prune artisan migrate migrate-rollback test test-coverage cs-fix php-cpd build-docs phpstan ide-helper commit
+.PHONY: first-run prepare-env up down clean prune artisan migrate migrate-rollback db-seed test test-coverage cs-fix php-cpd build-docs phpstan ide-helper commit
 
-first-run: prepare-env up composer-install migrate
+first-run: prepare-env up composer-install migrate db-seed
 
 prepare-env:
 	cp .env.example .env
@@ -31,6 +31,9 @@ migrate:
 
 migrate-rollback:
 	docker-compose -f docker-compose.yml exec php-fpm php artisan migrate:rollback
+
+db-seed:
+	docker-compose -f docker-compose.yml exec php-fpm php artisan db:seed
 
 test:
 	docker-compose -f docker-compose.yml exec php-fpm php vendor/bin/phpunit

@@ -68,7 +68,4 @@ services:
     profiles:
       - donotstart
     command: > 
-        sh -c "/usr/local/bin/docker-entrypoint.sh generate \
-        -i /local/openapi.yaml \ 
-        -g html2 \
-        -o /local/output"
+        sh -c "/usr/local/bin/docker-entrypoint.sh generate -i /local/openapi.yaml -g html2 -o /local/output"

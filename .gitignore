@@ -156,3 +156,6 @@ coverage/
 
 # Documentation output
 /docs/output/
+
+# ide-helper
+_ide_helper.php
