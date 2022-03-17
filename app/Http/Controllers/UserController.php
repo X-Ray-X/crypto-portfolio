@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RepositoryOperationException;
 use App\Helpers\HttpResponse;
 use App\Repositories\UserRepositoryInterface;
 use App\Rules\PhoneNumber;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -133,5 +135,34 @@ class UserController extends Controller
         } catch (ModelNotFoundException $exception) {
             return HttpResponse::withArray(Response::HTTP_NOT_FOUND, ['error' => sprintf('The user with ID: %s does not exist.', $id)]);
         }
+    }
+
+    public function createApiKey(Request $request): JsonResponse
+    {
+        $this->validate($request, [
+            'username' => ['required'],
+            'password' => ['required'],
+        ]);
+
+        try {
+            $user = $this->userRepository->getUserByUsername($request['username']);
+        } catch (ModelNotFoundException $exception) {
+            return HttpResponse::withArray(Response::HTTP_NOT_FOUND, ['error' => 'User account does not exist.']);
+        }
+
+        if ($request['password'] === Crypt::decryptString($user->password)) {
+            try {
+                $apiKey = $this->userRepository->createUserApiKey($user);
+            } catch (RepositoryOperationException $exception) {
+                return HttpResponse::withArray(Response::HTTP_INTERNAL_SERVER_ERROR, ['error' => $exception->getMessage()]);
+            }
+
+            return HttpResponse::withArray(Response::HTTP_OK, [
+                'message' => 'Please save this API Key and use it as your api-key authorization header for future requests.',
+                'apiKey' => $apiKey,
+            ]);
+        }
+
+        return HttpResponse::withArray(Response::HTTP_UNAUTHORIZED, ['error' => 'The user credentials do not match.']);
     }
 }

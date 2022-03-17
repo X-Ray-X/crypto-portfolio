@@ -2,9 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\RepositoryOperationException;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -36,6 +39,17 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * @param string $username
+     * @return User
+     *
+     * @throws ModelNotFoundException
+     */
+    public function getUserByUsername(string $username): User
+    {
+        return User::where('username', $username)->firstOrFail();
+    }
+
+    /**
      * @param string $userId
      * @param array $userData
      * @return bool
@@ -60,5 +74,23 @@ class UserRepository implements UserRepositoryInterface
     public function delete(string $userId): bool
     {
         return User::findOrFail($userId)->delete();
+    }
+
+    /**
+     * This method returns API Key value that can be passed to the user.
+     *
+     * @param User $user
+     * @return string
+     * @throws RepositoryOperationException
+     */
+    public function createUserApiKey(User $user): string
+    {
+        $apiKey = base64_encode(Str::random(40));
+
+        if (!$user->auth()->updateOrCreate(['user_id' => $user->id], ['api_key' => Hash::make($apiKey)])) {
+            throw new RepositoryOperationException('The system was unable to save the API Key hash in the database');
+        }
+
+        return $apiKey;
     }
 }

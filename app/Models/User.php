@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 use Sofa\Eloquence\Eloquence;
 use Sofa\Eloquence\Mappable;
@@ -79,6 +80,7 @@ use Sofa\Eloquence\Mappable;
  * @method static \Sofa\Eloquence\Builder|User whereUpdatedAt($value)
  * @method static \Sofa\Eloquence\Builder|User whereUsername($value)
  * @method static \Sofa\Eloquence\Builder|User whereYear($column, $operator, $value, $boolean = 'and')
+ * @property-read \App\Models\UserApiKey|null $auth
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -117,4 +119,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'firstName' => 'first_name',
         'lastName' => 'last_name'
     ];
+
+    /**
+     * Get the API Key of the user.
+     */
+    public function auth(): HasOne
+    {
+        return $this->hasOne(UserApiKey::class, 'user_id', 'id');
+    }
 }

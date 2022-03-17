@@ -26,12 +26,18 @@ $router->group([
         'uses' => UserController::class . '@create',
     ]);
     $router->get('/users/{id}', [
-        'uses' => UserController::class . '@get'
+        'uses' => UserController::class . '@get',
+        'middleware' => 'auth'
     ]);
     $router->put('/users/{id}', [
-        'uses' => UserController::class . '@update'
+        'uses' => UserController::class . '@update',
+        'middleware' => 'auth'
     ]);
     $router->delete('/users/{id}', [
-        'uses' => UserController::class . '@delete'
+        'uses' => UserController::class . '@delete',
+        'middleware' => 'auth'
+    ]);
+    $router->post('/users/api-key', [
+        'uses' => UserController::class . '@createApiKey',
     ]);
 });

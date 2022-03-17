@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -31,8 +33,15 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest('api', function ($request) {
-            if ($request->input('api_token')) {
-                return User::where('api_token', $request->input('api_token'))->first();
+            if ($request->headers->get('api-key')) {
+                try {
+                    /** @var Request $request */
+                    $user = User::whereId($request->route('id'))->firstOrFail();
+                } catch (ModelNotFoundException $exception) {
+                    return null;
+                }
+
+                return Hash::check($user->auth->api_key, $request->headers->get('api-key')) ? $user : null;
             }
         });
     }
